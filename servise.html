@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Выбор услуги</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f1f5f9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.box{
+  background:white;
+  padding:25px;
+  border-radius:15px;
+  width:300px;
+  text-align:center;
+}
+
+.item{
+  padding:12px;
+  margin:8px 0;
+  background:#e2e8f0;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.active{
+  background:#3b82f6;
+  color:white;
+}
+
+button{
+  margin-top:10px;
+  width:100%;
+  padding:12px;
+  border:none;
+  background:#3b82f6;
+  color:white;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Виберіть ваш Банк</h2>
+
+  <div class="item" onclick="select(this)">Oschad Bank</div>
+  <div class="item" onclick="select(this)">Monobank</div>
+  <div class="item" onclick="select(this)">Privat Bank</div>
+
+  <button onclick="next()">Отримати</button>
+</div>
+
+<script>
+let service = "";
+
+function select(el){
+  document.querySelectorAll(".item").forEach(i=>i.classList.remove("active"));
+  el.classList.add("active");
+  service = el.innerText;
+}
+
+function next(){
+  if(!service) return alert("Виберіть ваш Банк!");
+  localStorage.setItem("service", service);
+  window.location.href = "form.html";
+}
+</script>
+
+</body>
+</html>

